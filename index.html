@@ -695,6 +695,89 @@
   }
   .info-got-it:hover { background: var(--accent-hover); }
 
+  /* ── MOBILE RESPONSIVE ── */
+  @media (max-width: 640px) {
+    body { font-size: 15px; }
+
+    /* Topbar: stack search below logo+actions row */
+    .topbar {
+      flex-wrap: wrap;
+      height: auto;
+      padding: 8px 12px;
+      gap: 8px;
+    }
+    .logo {
+      width: auto;
+      height: 40px;
+      justify-content: flex-start;
+    }
+    .search-wrap {
+      order: 3;
+      max-width: 100%;
+      width: 100%;
+      flex: none;
+    }
+    .search-wrap input { font-size: 15px; }
+    .topbar-actions {
+      margin-left: auto;
+      gap: 6px;
+    }
+
+    /* Shrink topbar buttons */
+    .btn-select { font-size: 14px; padding: 6px 10px; }
+    .sort-select { font-size: 14px; padding: 6px 8px; }
+    .load-btn {
+      font-size: 14px;
+      padding: 6px 10px;
+    }
+    /* Hide the verbose load button label, keep icon */
+    .load-btn span.load-label { display: none; }
+
+    /* Hide sidebar entirely on mobile (no drag-drop on phone) */
+    .sidebar { display: none; }
+
+    /* Main area fills full width */
+    .main { padding: 12px; }
+
+    /* Single-column card grid */
+    .template-grid {
+      grid-template-columns: 1fr;
+    }
+
+    /* Multi-copy bar full width */
+    .multi-copy-bar {
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      transform: none;
+      white-space: normal;
+    }
+
+    /* Info modal: bottom sheet on mobile */
+    .info-overlay {
+      align-items: flex-end;
+    }
+    .info-box {
+      width: 100%;
+      max-width: 100%;
+      max-height: 88vh;
+      padding: 20px 18px 28px;
+      border-radius: 18px 18px 0 0;
+      border-bottom: none;
+    }
+
+    /* Toast position safe area */
+    .toast {
+      right: 12px;
+      bottom: 12px;
+    }
+
+    /* Drop zone padding */
+    .drop-zone {
+      padding: 40px 20px;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -718,7 +801,7 @@
         <path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M4 17v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      Load Templates (.json)
+      <span class="load-label">Load Templates (.json)</span>
     </button>
 
   </div>
