@@ -701,9 +701,24 @@
   }
   .info-got-it:hover { background: var(--accent-hover); }
 
-  /* ── MOBILE RESPONSIVE REMOVED ── */
-  /* This viewer is desktop-only. Mobile responsive layout intentionally
-     removed. Please use the ClipTemp app for mobile use. */
+  /* ── MOBILE: minimal fixes so content is visible (layout stays desktop-style) ── */
+  @media (max-width: 768px) {
+    /* Hide the sidebar entirely on mobile — no hamburger, no drawer */
+    .sidebar { display: none !important; }
+    /* Backdrop not needed without sidebar */
+    .sidebar-backdrop { display: none !important; }
+    /* Main area takes full width */
+    .main { padding: 12px; min-width: 0; }
+    /* Single-column card grid */
+    .template-grid { grid-template-columns: 1fr; }
+    /* Multi-copy bar full width */
+    .multi-copy-bar {
+      left: 12px; right: 12px; bottom: 12px;
+      transform: none; white-space: normal;
+    }
+    /* Toast */
+    .toast { right: 12px; bottom: 12px; }
+  }
 
   /* ── MOBILE NOTICE POPUP ── */
   .mobile-notice-overlay {
@@ -1496,10 +1511,16 @@ document.getElementById('info-overlay').addEventListener('click', function(e) {
   if (e.target === this) closeInfoModal();
 });
 
-// Show on first visit
-try {
-  if (!localStorage.getItem(INFO_SEEN_KEY)) openInfoModal();
-} catch(e) { openInfoModal(); }
+// Show on first visit — but NOT on mobile (mobile notice handles opening it after dismiss)
+(function() {
+  var ua = navigator.userAgent || '';
+  var isMobile = /Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Mobile Safari/i.test(ua)
+    && (window.screen.width <= 768 || navigator.maxTouchPoints > 1);
+  if (isMobile) return; // mobile: info modal opens after notice is dismissed
+  try {
+    if (!localStorage.getItem(INFO_SEEN_KEY)) openInfoModal();
+  } catch(e) { openInfoModal(); }
+})();
 
 // ── MOBILE SIDEBAR DRAWER ──
 (function() {
@@ -1533,16 +1554,10 @@ try {
   var NOTICE_INTERVAL = 3 * 60 * 1000; // show again every 3 minutes
 
   function isMobileDevice() {
-    // Combine three signals for reliability:
-    // 1. User agent contains a known mobile OS keyword
-    // 2. Screen width is narrow (phone-width)
-    // 3. Has touch input with more than 1 point (rules out mice)
     var ua = navigator.userAgent || '';
     var mobileUA = /Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Mobile Safari/i.test(ua);
     var narrowScreen = window.screen.width <= 768;
     var touchDevice = navigator.maxTouchPoints > 1;
-    // Must match UA + at least one of the other signals to avoid false-positives
-    // on touch-screen laptops with wide screens.
     return mobileUA && (narrowScreen || touchDevice);
   }
 
@@ -1558,13 +1573,17 @@ try {
 
   function dismissNotice() {
     overlay.style.display = 'none';
-    // Schedule next appearance
+    // On mobile: open the info/how-to modal after dismissing the notice
+    // (always show it on mobile since the notice blocked it on load)
+    openInfoModal();
+    // Schedule the notice to reappear every few minutes
     setTimeout(showNotice, NOTICE_INTERVAL);
   }
 
   btn.addEventListener('click', dismissNotice);
 
-  // Show immediately on load
+  // Show immediately on load — and prevent info modal from opening at the
+  // same time (it will open after the notice is dismissed instead)
   showNotice();
 })();
 
