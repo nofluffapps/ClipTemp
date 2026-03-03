@@ -670,6 +670,7 @@
   }
   .info-step-text {
     font-size: 15px; color: var(--text-mid); line-height: 1.6; padding-top: 2px;
+    text-align: justify;
   }
   .info-step-text strong { color: var(--text); }
   .info-divider {
@@ -683,8 +684,11 @@
     font-size: 14px;
     color: var(--text-mid);
     line-height: 1.6;
+    text-align: justify;
   }
   .info-tip strong { color: var(--accent); }
+  .info-tip p { margin: 0; }
+  .info-tip p + p { margin-top: 10px; }
   .info-footer {
     display: flex; justify-content: flex-end;
   }
@@ -697,133 +701,69 @@
   }
   .info-got-it:hover { background: var(--accent-hover); }
 
-  /* ── MOBILE RESPONSIVE ── */
-  @media (max-width: 640px) {
-    body { font-size: 15px; }
+  /* ── MOBILE RESPONSIVE REMOVED ── */
+  /* This viewer is desktop-only. Mobile responsive layout intentionally
+     removed. Please use the ClipTemp app for mobile use. */
 
-    /* Topbar: stack search below logo+actions row */
-    .topbar {
-      flex-wrap: wrap;
-      height: auto;
-      padding: 8px 12px;
-      gap: 8px;
-    }
-    .logo {
-      width: auto;
-      height: 40px;
-      justify-content: flex-start;
-    }
-    .search-wrap {
-      order: 3;
-      max-width: 100%;
-      width: 100%;
-      flex: none;
-    }
-    .search-wrap input { font-size: 15px; }
-    .topbar-actions {
-      margin-left: auto;
-      gap: 6px;
-    }
-
-    /* Shrink topbar buttons */
-    .btn-select { font-size: 14px; padding: 6px 10px; }
-    .sort-select { font-size: 14px; padding: 6px 8px; }
-    .load-btn {
-      font-size: 14px;
-      padding: 6px 10px;
-    }
-    /* Hide the verbose load button label, keep icon */
-    .load-btn span.load-label { display: none; }
-
-    /* Hamburger button - only visible on mobile */
-    .hamburger-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text-mid);
-      font-size: 20px;
-      width: 38px;
-      height: 38px;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: all 0.15s;
-    }
-    .hamburger-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* Sidebar: hidden by default, slides in as drawer */
-    .sidebar {
-      display: flex;
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
-      z-index: 200;
-      width: 280px;
-      transform: translateX(-100%);
-      transition: transform 0.25s ease;
-      box-shadow: 4px 0 24px rgba(0,0,0,0.4);
-    }
-    .sidebar.open {
-      transform: translateX(0);
-    }
-
-    /* Backdrop behind open drawer */
-    .sidebar-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 199;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(2px);
-    }
-    .sidebar-backdrop.visible { display: block; }
-
-    /* Main area fills full width */
-    .main { padding: 12px; }
-
-    /* Single-column card grid */
-    .template-grid {
-      grid-template-columns: 1fr;
-    }
-
-    /* Multi-copy bar full width */
-    .multi-copy-bar {
-      left: 12px;
-      right: 12px;
-      bottom: 12px;
-      transform: none;
-      white-space: normal;
-    }
-
-    /* Info modal: bottom sheet on mobile */
-    .info-overlay {
-      align-items: flex-end;
-    }
-    .info-box {
-      width: 100%;
-      max-width: 100%;
-      max-height: 88vh;
-      padding: 20px 18px 28px;
-      border-radius: 18px 18px 0 0;
-      border-bottom: none;
-    }
-
-    /* Toast position safe area */
-    .toast {
-      right: 12px;
-      bottom: 12px;
-    }
-
-    /* Drop zone padding */
-    .drop-zone {
-      padding: 40px 20px;
-    }
+  /* ── MOBILE NOTICE POPUP ── */
+  .mobile-notice-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    padding: 20px;
   }
+  .mobile-notice-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 360px;
+    padding: 28px 24px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+  .mobile-notice-icon { font-size: 38px; line-height: 1; }
+  .mobile-notice-title {
+    font-size: 17px; font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 0.01em;
+  }
+  .mobile-notice-body {
+    font-size: 15px; color: var(--text-mid); line-height: 1.6;
+  }
+  .mobile-notice-body strong { color: var(--text); }
+  .mobile-notice-btn {
+    background: var(--accent); border: none;
+    border-radius: 9px; color: #fff;
+    font-family: var(--sans); font-size: 15px; font-weight: 700;
+    padding: 11px 24px; cursor: pointer;
+    transition: background 0.15s;
+    width: 100%;
+    margin-top: 4px;
+  }
+  .mobile-notice-btn:hover { background: var(--accent-hover); }
 
 </style>
 </head>
 <body>
+
+<!-- MOBILE NOTICE POPUP -->
+<div class="mobile-notice-overlay" id="mobile-notice-overlay" style="display:none">
+  <div class="mobile-notice-box">
+    <div class="mobile-notice-icon">🖥️</div>
+    <div class="mobile-notice-title">You're using Desktop View</div>
+    <div class="mobile-notice-body">
+      This viewer is tailored for <strong>Laptops and Desktop PCs</strong>, not mobile phones.<br><br>
+      For a smooth mobile experience, use the <strong>ClipTemp app</strong>.
+    </div>
+    <button class="mobile-notice-btn" id="mobile-notice-dismiss">Got it</button>
+  </div>
+</div>
 
 <div class="topbar">
   <button class="hamburger-btn" id="hamburger-btn" title="Categories">☰</button>
@@ -894,8 +834,9 @@
     <hr class="info-divider">
 
     <div class="info-tip">
-      <strong>⚡ Loaded once, remembered forever.</strong> Your templates are saved in the browser and will still be there after you close the tab, restart the browser, or reboot your computer — until you clear your browser data.<br><br>
-      <strong>🔒 Your data stays private.</strong> Nothing is uploaded anywhere. Your .json file is read locally in your browser and never leaves your device. If you add, edit, or delete templates in the app, <strong style="color:var(--accent)">simply export again and reload</strong> the file here.
+      <p><strong>⚡ Loaded once, remembered forever.</strong> Your templates are saved in the browser and will still be there after you close the tab, restart the browser, or reboot your computer — until you clear your browser data.</p>
+      <p><strong>🔒 Your data stays private.</strong> Nothing is uploaded anywhere. Your .json file is read locally in your browser and never leaves your device.</p>
+      <p><strong>🔄 Can I sync changes?</strong> Not right now. Adding it would take significant effort. If enough users support the app, I may add it later. For now, when you add, edit, or delete templates, export again from the app and reload the file here.</p>
     </div>
 
     <div class="info-footer">
@@ -1585,6 +1526,46 @@ try {
   sidebar.addEventListener('click', function(e) {
     if (e.target.closest('.cat-item')) closeDrawer();
   });
+})();
+
+// ── MOBILE DETECTION & NOTICE POPUP ──
+(function() {
+  var NOTICE_INTERVAL = 3 * 60 * 1000; // show again every 3 minutes
+
+  function isMobileDevice() {
+    // Combine three signals for reliability:
+    // 1. User agent contains a known mobile OS keyword
+    // 2. Screen width is narrow (phone-width)
+    // 3. Has touch input with more than 1 point (rules out mice)
+    var ua = navigator.userAgent || '';
+    var mobileUA = /Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini|Mobile Safari/i.test(ua);
+    var narrowScreen = window.screen.width <= 768;
+    var touchDevice = navigator.maxTouchPoints > 1;
+    // Must match UA + at least one of the other signals to avoid false-positives
+    // on touch-screen laptops with wide screens.
+    return mobileUA && (narrowScreen || touchDevice);
+  }
+
+  if (!isMobileDevice()) return; // desktop — do nothing
+
+  var overlay = document.getElementById('mobile-notice-overlay');
+  var btn = document.getElementById('mobile-notice-dismiss');
+  if (!overlay || !btn) return;
+
+  function showNotice() {
+    overlay.style.display = 'flex';
+  }
+
+  function dismissNotice() {
+    overlay.style.display = 'none';
+    // Schedule next appearance
+    setTimeout(showNotice, NOTICE_INTERVAL);
+  }
+
+  btn.addEventListener('click', dismissNotice);
+
+  // Show immediately on load
+  showNotice();
 })();
 
 </script>
