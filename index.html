@@ -709,8 +709,10 @@
     .sidebar-backdrop { display: none !important; }
     /* Main area takes full width */
     .main { padding: 12px; min-width: 0; }
-    /* Single-column card grid */
-    .template-grid { grid-template-columns: 1fr; }
+    /* Match desktop: force wide layout, single horizontal scrollbar on .main */
+    .main { overflow-x: auto; overflow-y: auto; min-width: 0; }
+    .main > * { min-width: 960px; }
+    .template-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
     /* Multi-copy bar full width */
     .multi-copy-bar {
       left: 12px; right: 12px; bottom: 12px;
@@ -1086,15 +1088,7 @@ function updateMultiBar() {
       showToast(`Copied ${texts.length} template${texts.length !== 1 ? 's' : ''}!`);
       exitSelectMode();
     }).catch(() => {
-      const ta = document.createElement('textarea');
-      ta.value = combined;
-      ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      showToast(`Copied ${texts.length} template${texts.length !== 1 ? 's' : ''}!`);
-      exitSelectMode();
+      showToast('Copy failed — please use a modern browser.');
     });
   });
   document.getElementById('btn-multi-clear').addEventListener('click', () => {
